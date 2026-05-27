@@ -1,24 +1,33 @@
 # ODYSSEY ENIGMA (Enigma Machine Simulator)
 
-## Video Demo: <https://youtu.be/9F7QoQ1kr0s>
+A Python-based implementation of the historic Enigma cipher machine, allowing users to encrypt messages using a mechanism inspired by the machines used during World War II. [page:35]
 
-A Python-based implementation of the famous Enigma cipher machine, allowing users to encrypt messages using the same encryption mechanism employed during World War II.
+**Video Demo:**  
+[YouTube](https://youtu.be/9F7QoQ1kr0s)
+
+---
 
 ## Overview
 
-This project simulates the Enigma machine, an electromechanical rotor cipher device that was historically used for encrypting military communications. The implementation includes all the core components: rotors, a reflector, and a plugboard, providing a fully functional encryption system.
+Odyssey Enigma is a command-line Enigma machine simulator written in Python. It models the core components of the machine — rotors, reflector, and plugboard — and reproduces authentic rotor stepping, including the double-step behavior. [page:35]
+
+This project was originally built as my **CS50x final project**, and it has since grown into a personal passion project for exploring historical cryptography and software design. [page:35]
+
+---
 
 ## Features
 
-- **Multiple Rotor Models**: Supports rotors I-VIII, BETA, and GAMMA with authentic Enigma wiring configurations
-- **Configurable Reflectors**: Includes four reflector models (B, C, BT, CT) for different encryption profiles
-- **Plugboard Support**: Implement up to 10 character-pair swaps to add an additional encryption layer
-- **Authentic Rotor Stepping**: Implements proper notch-based rotor stepping with correct double-step behavior
-- **Real-time Encryption**: Interactive keyboard-based interface for live message encryption
+- Multiple rotor models: Supports rotors I–VIII, BETA, and GAMMA with historically inspired wiring configurations. [page:35]
+- Configurable reflectors: Includes reflector models B, C, BT, and CT. [page:35]
+- Plugboard support: Up to 10 character-pair swaps for additional encryption layers. [page:35]
+- Authentic rotor stepping: Notch-based stepping, including the classic double-step behavior. [page:35]
+- Real-time encryption: Interactive, keyboard-driven interface for live message encryption. [page:35]
+
+---
 
 ## Usage
 
-Run the Enigma machine simulator with the following command:
+Run the Enigma machine simulator with:
 
 ```bash
 sudo python3 enigma.py -R [rotor models] -M [starting positions] --reflector [reflector model] [plugboard swaps]
@@ -26,102 +35,84 @@ sudo python3 enigma.py -R [rotor models] -M [starting positions] --reflector [re
 
 ### Arguments
 
-- `-R, --rotors`: Space-separated rotor models in order from left to right (required)
-  - Available: `I`, `II`, `III`, `IV`, `V`, `VI`, `VII`, `VIII`, `BETA`, `GAMMA`
-  
-- `-M, --mode`: Initial rotor window positions for each rotor (required)
-  - Must be one letter (A-Z) per rotor, matching the number of rotors specified
-  
-- `--reflector`: Reflector model (required)
-  - Available: `B`, `C`, `BT`, `CT`
-  
-- `Plugs`: Optional positional arguments for plugboard swaps
-  - Specify as pairs of characters (e.g., `AB CD EF` swaps A↔B, C↔D, E↔F)
-  - Maximum 10 swaps allowed
+- `-R, --rotors`  
+  Rotor models from left to right (required).  
+  Available: `I`, `II`, `III`, `IV`, `V`, `VI`, `VII`, `VIII`, `BETA`, `GAMMA`. [page:35]
+
+- `-M, --mode`  
+  Initial rotor window positions (required). Must be one letter (A–Z) per rotor, matching the number of rotors specified. [page:35]
+
+- `--reflector`  
+  Reflector model (required).  
+  Available: `B`, `C`, `BT`, `CT`. [page:35]
+
+- `Plugs`  
+  Optional plugboard swaps, specified as pairs (e.g., `AB CD EF` for A↔B, C↔D, E↔F). Maximum 10 swaps. [page:35]
 
 ### Examples
 
-**Basic setup with three rotors:**
-
 ```bash
-sudo python enigma.py -R I II III -M A A A --reflector B
+# Basic setup with three rotors
+sudo python3 enigma.py -R I II III -M A A A --reflector B
+
+# With plugboard configuration
+sudo python3 enigma.py -R I II III -M Q E V --reflector B AB CD EF
+
+# With rotors VI, VII, VIII
+sudo python3 enigma.py -R VI VII VIII -M A A A --reflector C GH IJ KL MN OP QR
 ```
 
-**With plugboard configuration:**
+[page:35]
 
-```bash
-sudo python enigma.py -R I II III -M Q E V --reflector B AB CD EF
-```
-
-**With rotors VI, VII, VIII:**
-
-```bash
-sudo python enigma.py -R VI VII VIII -M A A A --reflector C GH IJ KL MN OP QR
-```
+---
 
 ## How It Works
 
-### Encryption Process
+When you press a key:
 
-When you press a key on the keyboard:
+1. Plugboard: The character is optionally swapped according to plugboard pairs. [page:35]  
+2. Rotor stepping: Rotors step according to their notch positions (rightmost always steps; middle double-steps in some cases). [page:35]  
+3. Forward path: Signal passes through the rotors from right to left. [page:35]  
+4. Reflection: The reflector sends the signal back. [page:35]  
+5. Backward path: Signal passes back through the rotors from left to right using inverse wiring. [page:35]  
+6. Plugboard output: Final character passes through the plugboard again and is displayed. [page:35]
 
-1. **Plugboard**: The character passes through the plugboard, where specified pairs are swapped
-2. **Rotor Stepping**: Rotors advance according to notch positions before encryption (rightmost always steps)
-3. **Forward Path**: Signal passes through rotors from right to left, with each rotor applying its wiring transformation
-4. **Reflection**: The signal bounces off the reflector, creating reciprocal encryption
-5. **Backward Path**: Signal passes through rotors again from left to right using inverse wiring
-6. **Plugboard Output**: Final character passes through plugboard again and displays
+With the same rotor/reflector/plugboard settings, encryption and decryption are identical — typing the ciphertext with the same configuration yields the original message. [page:35]
 
-The beauty of Enigma is that **the same settings used to encrypt will decrypt** — the reciprocal path through the reflector ensures symmetric encryption.
-
-### Rotor Mechanics
-
-- Each rotor has 26 contacts and an internal wiring that maps one letter to another
-- Rotors rotate after each keypress, changing the encryption mapping
-- When a rotor reaches a "notch" position, it causes the rotor to its left to step on the next keypress
-- This creates the famous **double-stepping** behavior where the middle rotor can step two positions in succession
+---
 
 ## Components
 
-### Rotor
+- **Rotor** – Implements wiring, notch positions, and forward/backward transformations. [page:35]  
+- **Reflector** – Provides symmetric mapping to send signals back through the rotors. [page:35]  
+- **Plugboard** – Adds a configurable substitution layer. [page:35]  
+- **EnigmaCircuit** – Orchestrates rotor stepping and the full encryption pipeline. [page:35]
 
-Implements the core encryption logic with:
+---
 
-- Configurable wiring (10 different historical models)
-- Notch positions that trigger adjacent rotor stepping
-- Entry/exit conversion methods for forward and backward signal paths
+## About This Project
 
-### Reflector
+This project is both my **CS50x final project** and a **personal passion project** exploring cryptography, historical machines, and Python software architecture. [page:35]
 
-Bounces the signal back through the rotors using one of four historical reflector wirings, ensuring message encryption is symmetric.
+If you are learning about Enigma or cryptography, you are welcome to **read** and **study** this code for understanding. However, please **do not copy this code** for coursework, problem sets, or final projects that you will submit as your own work. Writing your own implementation is not only required for academic integrity but also the best way to actually learn.
 
-### Plugboard
+---
 
-Provides an initial substitution layer with up to 10 character-pair swaps, adding complexity to the encryption before rotor processing.
+## Copyright
 
-### EnigmaCircuit
+**© 2026 Syed Navid Nowroz (Twoki). All rights reserved.**
 
-Orchestrates the complete encryption pipeline, managing rotor stepping and signal flow through all components.
+All software rights for this project are reserved for **Twoki**.
 
-## Limitations
+No permission is granted to use, copy, modify, merge, publish, distribute, sublicense, or sell copies of this software, in whole or in part, without **explicit written consent** from the copyright holder.
 
-- Maximum 10 plugboard swaps
-- Rotors must have matching number of models and starting positions
-- Requires administrator privileges due to keyboard library dependencies
+If you are interested in using this project or its code in any capacity beyond personal study, please contact me first.
 
-## Historical Context
+---
 
-The Enigma machine was famously broken by codebreakers at Bletchley Park during WWII, notably including Alan Turing. This implementation provides a functional simulator to understand the mechanical principles behind one of history's most important cryptographic devices.
+## Contact
 
-## Requirements
+For permission requests, questions, or collaboration:
 
-- Python 3.6+
-- `pynput` library
-
-## License
-
-This project is provided as an educational tool for understanding cipher machines and cryptography.
-
-## Author
-
-Created by [navid-nowroz](https://github.com/navid-nowroz)
+- GitHub: [@navid-nowroz](https://github.com/navid-nowroz)
+- Email: [Email me here](mailto:twokiii@zohomail.com)
